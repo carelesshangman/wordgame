@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word Chain Lobby</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .lobby-container {
+      max-width: 400px;
+      margin: 50px auto;
+      text-align: center;
+    }
+
+    .form-group {
+      margin: 15px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .form-group input,
+    .form-group button {
+      width: 280px;
+      max-width: 100%;
+    }
+
+
+    input, button {
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    #lobbyStatus {
+      margin-top: 20px;
+      color: #0ff;
+      font-weight: bold;
+    }
+
+    #copyCode {
+      cursor: pointer;
+      color: #0ff;
+      text-decoration: underline;
+      font-size: 0.9em;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      margin: 8px 0;
+      font-size: 1rem;
+      border: 2px solid #0ff4;
+      border-radius: 8px;
+      background-color: #1a1a1a;
+      color: #0ff;
+      outline: none;
+      box-shadow: 0 0 8px transparent;
+      transition: all 0.2s ease-in-out;
+    }
+
+    input:focus {
+      border-color: #0ff;
+      box-shadow: 0 0 10px #0ff8;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #0ff2;
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #0ff;
+      box-shadow: 0 0 12px #0ff5;
+      transform: translateY(-1px);
+    }
+
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 8px #0ff3; }
+      50% { box-shadow: 0 0 16px #0ff8; }
+      100% { box-shadow: 0 0 8px #0ff3; }
+    }
+
+    input:focus {
+      animation: glowPulse 1.5s infinite;
+    }
+
+  </style>
+</head>
+<body>
+<div class="container lobby-container">
+  <h1>🎮 Word Chain Lobby</h1>
+
+  <div class="form-group">
+    <input id="playerName" placeholder="Your name" />
+  </div>
+
+  <div class="form-group">
+    <button onclick="createLobby()">Create Lobby</button>
+  </div>
+
+  <hr>
+
+  <div class="form-group">
+    <input id="lobbyIdInput" placeholder="Lobby ID to join" />
+  </div>
+
+  <div class="form-group">
+    <button onclick="joinLobby()">Join Lobby</button>
+  </div>
+
+
+  <div id="lobbyStatus"></div>
+</div>
+
+<script>
+  const API = 'http://localhost:3000'; // Change to production later
+  let lobbyId = '';
+  let playerId = null;
+
+  async function createLobby() {
+    const name = document.getElementById('playerName').value.trim();
+    if (!name) return alert('Enter a name');
+
+    const res = await fetch(`${API}/create-lobby`, { method: 'POST' });
+    const data = await res.json();
+    lobbyId = data.lobbyId;
+    joinLobbyInternal(name, lobbyId);
+  }
+
+  async function joinLobby() {
+    const name = document.getElementById('playerName').value.trim();
+    const inputId = document.getElementById('lobbyIdInput').value.trim();
+    if (!name || !inputId) return alert('Enter name and lobby ID');
+    joinLobbyInternal(name, inputId);
+  }
+
+  async function joinLobbyInternal(name, lobbyIdToJoin) {
+    const res = await fetch(`${API}/join-lobby`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lobbyId: lobbyIdToJoin, playerName: name })
+    });
+
+    const data = await res.json();
+    if (data.playerId === undefined) {
+      return alert('Failed to join lobby');
+    }
+
+    lobbyId = lobbyIdToJoin;
+    playerId = data.playerId;
+    document.getElementById('lobbyStatus').innerHTML =
+            `✅ Joined lobby <strong>${lobbyId}</strong><br>Waiting for opponent...<br><span id="copyCode" onclick="copyLobbyId()">Copy Code</span>`;
+
+    pollLobbyReady();
+  }
+
+  function copyLobbyId() {
+    navigator.clipboard.writeText(lobbyId);
+    alert('Lobby code copied!');
+  }
+
+  async function pollLobbyReady() {
+    const check = async () => {
+      const res = await fetch(`${API}/guess-state?lobbyId=${lobbyId}&playerId=${playerId}`);
+      const data = await res.json();
+      if (data.playersReady >= 2) {
+        location.href = `index.html?lobbyId=${lobbyId}&playerId=${playerId}`;
+      } else {
+        setTimeout(check, 1500);
+      }
+    };
+    check();
+  }
+</script>
+</body>
+</html>

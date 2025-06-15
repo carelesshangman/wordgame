@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Word Duel</title>
+  <link rel="stylesheet" href="game.css" />
+</head>
+<body>
+<div class="game-layout">
+  <div class="player-side">
+    <h2>You</h2>
+    <div id="yourTurnBanner">Your Turn 🔥</div>
+
+    <div class="input-wrapper">
+      <input type="text" id="guessInput" placeholder="Your guess..." />
+      <span id="guessCheck">✅</span>
+    </div>
+
+    <div id="guessSuggestion"></div>
+
+    <h4>Your Correct Guesses</h4>
+    <ul id="yourGuesses"></ul>
+  </div>
+
+  <div class="opponent-side">
+    <h2>Opponent</h2>
+    <div id="opponentStatus">Waiting...</div>
+
+    <h4>Their Guesses</h4>
+    <ul id="opponentGuesses"></ul>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

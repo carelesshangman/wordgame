@@ -1,0 +1,184 @@
+body {
+    background-color: #111;
+    color: #eee;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+    border: 2px solid #0ff;
+    border-radius: 12px;
+    background: #1a1a1a;
+    box-shadow: 0 0 15px #0ff4;
+    width: 300px;
+}
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#wordInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 35px 10px 10px;  /* Extra right padding for the icon */
+    background: #222;
+    color: #0ff;
+    border: 1px solid #0ff;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+}
+
+#checkIcon {
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    font-size: 1.2rem;
+}
+
+#checkIcon.visible {
+    opacity: 1;
+}
+
+
+#suggestionContainer {
+    margin-top: 15px;
+}
+
+.suggestion {
+    margin-top: 5px;
+    background-color: #0ff2;
+    color: #0ff;
+    border: 1px solid #0ff8;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-block;
+    transition: background-color 0.2s;
+}
+
+.suggestion:hover {
+    background-color: #0ff5;
+}
+.container {
+    max-width: 320px;
+    width: 100%;
+}
+
+.main-layout {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.left {
+    flex: 1;
+}
+
+.right {
+    width: 150px;
+    text-align: left;
+    background-color: #222;
+    border: 1px solid #0ff4;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 0 5px #0ff3;
+}
+
+#wordChain {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#wordChain li {
+    margin-bottom: 5px;
+    padding: 4px 8px;
+    background-color: #0ff1;
+    border-radius: 4px;
+    color: #0ff;
+    font-weight: bold;
+}
+
+#chainCounter.full {
+    color: #ff5;
+    text-shadow: 0 0 5px #ff0;
+}
+
+body {
+    background: #111;
+    color: #0ff;
+    font-family: sans-serif;
+}
+
+.game-layout {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+}
+
+.player-side, .opponent-side {
+    width: 45%;
+    background: #181818;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px #0ff4;
+}
+
+.input-wrapper {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+#guessInput {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #0ff4;
+    background-color: #000;
+    color: #0ff;
+    border-radius: 8px;
+    outline: none;
+}
+
+#guessCheck {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: none;
+    font-size: 1.2em;
+    color: lime;
+}
+
+#guessCheck.visible {
+    display: inline;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+#yourTurnBanner {
+    background: #0ff4;
+    padding: 6px 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: none;
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+}

@@ -1,0 +1,86 @@
+body {
+    background: #000;
+    color: #fff;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.game-layout {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.player-side, .opponent-side {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.player-side {
+    background: linear-gradient(135deg, #001f3f, #0074D9);
+    color: #aadfff;
+}
+
+.opponent-side {
+    background: linear-gradient(135deg, #3f0000, #FF4136);
+    color: #ffbaba;
+}
+
+h2, h4 {
+    margin-top: 0;
+}
+
+.input-wrapper {
+    position: relative;
+    margin-top: 10px;
+}
+
+#guessInput {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #aadfff;
+    background-color: #000a;
+    color: #aadfff;
+    border-radius: 8px;
+    outline: none;
+}
+
+#guessCheck {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 1.2em;
+    display: none;
+    color: lime;
+}
+
+#guessCheck.visible {
+    display: inline;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+#yourTurnBanner {
+    background: #aadfff;
+    color: #001f3f;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center;
+}
+
+#opponentStatus {
+    margin-bottom: 10px;
+}
