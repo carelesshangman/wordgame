@@ -86,7 +86,7 @@ function updateUI(state) {
     renderList(opponentGuesses, state.opponentGuesses || []);
     opponentStatus.innerText = state.opponentGuesses?.slice(-1)?.[0] || 'Waiting...';
 
-    if (state.winner !== null) {
+    if (state.winner != null) {
         const youWon = state.winner === playerId;
         alert(youWon ? '🏆 You win!' : '😢 You lose...');
         guessInput.disabled = true;
