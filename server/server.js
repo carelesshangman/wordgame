@@ -82,6 +82,62 @@ fastify.get('/guess-state', async (req, reply) => {
 
 });
 
+fastify.post('/guess', async (req, reply) => {
+    const { lobbyId, playerId, guess } = req.body;
+    const lobby = lobbies[lobbyId];
+
+    if (!lobby || !lobby.players[playerId] || typeof guess !== 'string') {
+        return reply.code(400).send({ error: 'Invalid request' });
+    }
+
+    if (lobby.state !== 'ready') {
+        return reply.code(400).send({ error: 'Game not started yet' });
+    }
+
+    const player = lobby.players[playerId];
+    const opponentId = 1 - playerId;
+    const opponent = lobby.players[opponentId];
+
+    if (lobby.turn !== playerId) {
+        return reply.code(400).send({ error: 'Not your turn' });
+    }
+
+    const cleanGuess = guess.toLowerCase().trim();
+
+    // Add the guess to player's history
+    player.guesses = player.guesses || [];
+    if (player.guesses.includes(cleanGuess)) {
+        return reply.code(400).send({ error: 'You already guessed that' });
+    }
+    player.guesses.push(cleanGuess);
+
+    let correct = false;
+
+    if (opponent.words.includes(cleanGuess)) {
+        // Remove the found word
+        opponent.words = opponent.words.filter(w => w !== cleanGuess);
+        correct = true;
+
+        // Check win condition
+        if (opponent.words.length === 0) {
+            lobby.winner = playerId;
+            lobby.state = 'ended';
+        }
+    }
+
+    // Update turn regardless
+    lobby.turn = opponentId;
+    lobby.lastCorrectLetter = cleanGuess.at(-1) ?? null;
+
+    reply.send({
+        correct,
+        nextTurn: lobby.turn,
+        gameOver: lobby.state === 'ended',
+        winner: lobby.winner ?? null
+    });
+});
+
+
 fastify.listen({ port: 3000 }, () => {
     console.log('✅ Fastify server listening on http://localhost:3000');
 });
