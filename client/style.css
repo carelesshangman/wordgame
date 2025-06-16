@@ -71,6 +71,13 @@ body {
 .suggestion:hover {
     background-color: #0ff5;
 }
+
+.status-message {
+    margin-top: 20px;
+    text-align: center;
+    color: #ff5;
+    font-weight: bold;
+}
 .container {
     max-width: 320px;
     width: 100%;

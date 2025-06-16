@@ -123,10 +123,14 @@
   const API = 'http://localhost:3000'; // Change to production later
   let lobbyId = '';
   let playerId = null;
+  const statusEl = document.getElementById('lobbyStatus');
 
   async function createLobby() {
     const name = document.getElementById('playerName').value.trim();
-    if (!name) return alert('Enter a name');
+    if (!name) {
+      statusEl.textContent = 'Enter a name';
+      return;
+    }
 
     const res = await fetch(`${API}/create-lobby`, { method: 'POST' });
     const data = await res.json();
@@ -137,7 +141,10 @@
   async function joinLobby() {
     const name = document.getElementById('playerName').value.trim();
     const inputId = document.getElementById('lobbyIdInput').value.trim();
-    if (!name || !inputId) return alert('Enter name and lobby ID');
+    if (!name || !inputId) {
+      statusEl.textContent = 'Enter name and lobby ID';
+      return;
+    }
     joinLobbyInternal(name, inputId);
   }
 
@@ -150,7 +157,8 @@
 
     const data = await res.json();
     if (data.playerId === undefined) {
-      return alert('Failed to join lobby');
+      statusEl.textContent = 'Failed to join lobby';
+      return;
     }
 
     lobbyId = lobbyIdToJoin;
@@ -163,7 +171,7 @@
 
   function copyLobbyId() {
     navigator.clipboard.writeText(lobbyId);
-    alert('Lobby code copied!');
+    statusEl.textContent = 'Lobby code copied!';
   }
 
   async function pollLobbyReady() {

@@ -9,6 +9,13 @@ const yourGuesses = document.getElementById('yourGuesses');
 const opponentGuesses = document.getElementById('opponentGuesses');
 const turnBanner = document.getElementById('yourTurnBanner');
 const opponentStatus = document.getElementById('opponentStatus');
+const messageEl = document.getElementById('gameMessage');
+
+function showMessage(msg) {
+    if (messageEl) {
+        messageEl.textContent = msg;
+    }
+}
 
 let wordSet = new Set();
 let isMyTurn = false;
@@ -88,7 +95,7 @@ function updateUI(state) {
 
     if (state.winner != null) {
         const youWon = state.winner === playerId;
-        alert(youWon ? '🏆 You win!' : '😢 You lose...');
+        showMessage(youWon ? '🏆 You win!' : '😢 You lose...');
         guessInput.disabled = true;
         clearInterval(pollInterval);
     }

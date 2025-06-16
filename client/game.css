@@ -84,3 +84,10 @@ ul {
 #opponentStatus {
     margin-bottom: 10px;
 }
+
+.status-message {
+    margin-top: 20px;
+    text-align: center;
+    color: #ff5;
+    font-weight: bold;
+}

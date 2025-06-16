@@ -6,11 +6,20 @@ let forcedPrefix = '';
 const urlParams = new URLSearchParams(window.location.search);
 const lobbyId = urlParams.get('lobbyId');
 const playerId = parseInt(urlParams.get('playerId'), 10);
+const messageEl = document.getElementById('mainMessage');
+
+function showMessage(msg) {
+    if (messageEl) {
+        messageEl.textContent = msg;
+    }
+}
 
 // 🔐 Validate query params
 if (!lobbyId || isNaN(playerId)) {
-    alert('Missing lobby info. Redirecting to lobby...');
-    window.location.href = 'lobby.html';
+    if (messageEl) messageEl.textContent = 'Missing lobby info. Redirecting to lobby...';
+    setTimeout(() => {
+        window.location.href = 'lobby.html';
+    }, 1500);
 }
 
 const inputEl = document.getElementById('wordInput');
@@ -160,7 +169,7 @@ async function submitWordsToLobby() {
 
         const data = await res.json();
         if (data.status === 'ok') {
-            alert('✅ Your words were submitted. Waiting for opponent...');
+            showMessage('✅ Your words were submitted. Waiting for opponent...');
             setInterval(async () => {
                 try {
                     const res = await fetch(`http://localhost:3000/guess-state?lobbyId=${lobbyId}&playerId=${playerId}`);
@@ -174,11 +183,11 @@ async function submitWordsToLobby() {
                 }
             }, 1000);
         } else {
-            alert('❌ Submission error: ' + (data.error || 'Unknown issue'));
+            showMessage('❌ Submission error: ' + (data.error || 'Unknown issue'));
         }
     } catch (err) {
         console.error(err);
-        alert('❌ Network error during word submission');
+        showMessage('❌ Network error during word submission');
     }
 }
 
